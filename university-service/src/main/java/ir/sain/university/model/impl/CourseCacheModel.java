@@ -61,7 +61,7 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -79,6 +79,14 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", status=");
+		sb.append(status);
+		sb.append(", statusByUserId=");
+		sb.append(statusByUserId);
+		sb.append(", statusByUserName=");
+		sb.append(statusByUserName);
+		sb.append(", statusDate=");
+		sb.append(statusDate);
 		sb.append(", code=");
 		sb.append(code);
 		sb.append(", name=");
@@ -129,6 +137,23 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 			courseImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		courseImpl.setStatus(status);
+		courseImpl.setStatusByUserId(statusByUserId);
+
+		if (statusByUserName == null) {
+			courseImpl.setStatusByUserName("");
+		}
+		else {
+			courseImpl.setStatusByUserName(statusByUserName);
+		}
+
+		if (statusDate == Long.MIN_VALUE) {
+			courseImpl.setStatusDate(null);
+		}
+		else {
+			courseImpl.setStatusDate(new Date(statusDate));
+		}
+
 		if (code == null) {
 			courseImpl.setCode("");
 		}
@@ -165,6 +190,12 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
+		status = objectInput.readInt();
+
+		statusByUserId = objectInput.readLong();
+		statusByUserName = objectInput.readUTF();
+		statusDate = objectInput.readLong();
 		code = objectInput.readUTF();
 		name = objectInput.readUTF();
 
@@ -200,6 +231,19 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
+		objectOutput.writeInt(status);
+
+		objectOutput.writeLong(statusByUserId);
+
+		if (statusByUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(statusByUserName);
+		}
+
+		objectOutput.writeLong(statusDate);
+
 		if (code == null) {
 			objectOutput.writeUTF("");
 		}
@@ -227,6 +271,10 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
+	public int status;
+	public long statusByUserId;
+	public String statusByUserName;
+	public long statusDate;
 	public String code;
 	public String name;
 	public int unit;

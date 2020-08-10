@@ -63,7 +63,7 @@ public class UniversityCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -81,6 +81,14 @@ public class UniversityCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", status=");
+		sb.append(status);
+		sb.append(", statusByUserId=");
+		sb.append(statusByUserId);
+		sb.append(", statusByUserName=");
+		sb.append(statusByUserName);
+		sb.append(", statusDate=");
+		sb.append(statusDate);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append("}");
@@ -125,6 +133,23 @@ public class UniversityCacheModel
 			universityImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		universityImpl.setStatus(status);
+		universityImpl.setStatusByUserId(statusByUserId);
+
+		if (statusByUserName == null) {
+			universityImpl.setStatusByUserName("");
+		}
+		else {
+			universityImpl.setStatusByUserName(statusByUserName);
+		}
+
+		if (statusDate == Long.MIN_VALUE) {
+			universityImpl.setStatusDate(null);
+		}
+		else {
+			universityImpl.setStatusDate(new Date(statusDate));
+		}
+
 		if (name == null) {
 			universityImpl.setName("");
 		}
@@ -151,6 +176,12 @@ public class UniversityCacheModel
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
+		status = objectInput.readInt();
+
+		statusByUserId = objectInput.readLong();
+		statusByUserName = objectInput.readUTF();
+		statusDate = objectInput.readLong();
 		name = objectInput.readUTF();
 	}
 
@@ -181,6 +212,19 @@ public class UniversityCacheModel
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
+		objectOutput.writeInt(status);
+
+		objectOutput.writeLong(statusByUserId);
+
+		if (statusByUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(statusByUserName);
+		}
+
+		objectOutput.writeLong(statusDate);
+
 		if (name == null) {
 			objectOutput.writeUTF("");
 		}
@@ -197,6 +241,10 @@ public class UniversityCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
+	public int status;
+	public long statusByUserId;
+	public String statusByUserName;
+	public long statusDate;
 	public String name;
 
 }

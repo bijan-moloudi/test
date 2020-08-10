@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.StagedAuditedModel;
+import com.liferay.portal.kernel.model.WorkflowedModel;
 
 import java.util.Date;
 
@@ -38,7 +39,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface UniversityModel
 	extends BaseModel<University>, GroupedModel, ShardedModel,
-			StagedAuditedModel {
+			StagedAuditedModel, WorkflowedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -205,6 +206,87 @@ public interface UniversityModel
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the status of this university.
+	 *
+	 * @return the status of this university
+	 */
+	@Override
+	public int getStatus();
+
+	/**
+	 * Sets the status of this university.
+	 *
+	 * @param status the status of this university
+	 */
+	@Override
+	public void setStatus(int status);
+
+	/**
+	 * Returns the status by user ID of this university.
+	 *
+	 * @return the status by user ID of this university
+	 */
+	@Override
+	public long getStatusByUserId();
+
+	/**
+	 * Sets the status by user ID of this university.
+	 *
+	 * @param statusByUserId the status by user ID of this university
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId);
+
+	/**
+	 * Returns the status by user uuid of this university.
+	 *
+	 * @return the status by user uuid of this university
+	 */
+	@Override
+	public String getStatusByUserUuid();
+
+	/**
+	 * Sets the status by user uuid of this university.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this university
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid);
+
+	/**
+	 * Returns the status by user name of this university.
+	 *
+	 * @return the status by user name of this university
+	 */
+	@AutoEscape
+	@Override
+	public String getStatusByUserName();
+
+	/**
+	 * Sets the status by user name of this university.
+	 *
+	 * @param statusByUserName the status by user name of this university
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName);
+
+	/**
+	 * Returns the status date of this university.
+	 *
+	 * @return the status date of this university
+	 */
+	@Override
+	public Date getStatusDate();
+
+	/**
+	 * Sets the status date of this university.
+	 *
+	 * @param statusDate the status date of this university
+	 */
+	@Override
+	public void setStatusDate(Date statusDate);
+
+	/**
 	 * Returns the name of this university.
 	 *
 	 * @return the name of this university
@@ -218,5 +300,69 @@ public interface UniversityModel
 	 * @param name the name of this university
 	 */
 	public void setName(String name);
+
+	/**
+	 * Returns <code>true</code> if this university is approved.
+	 *
+	 * @return <code>true</code> if this university is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved();
+
+	/**
+	 * Returns <code>true</code> if this university is denied.
+	 *
+	 * @return <code>true</code> if this university is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied();
+
+	/**
+	 * Returns <code>true</code> if this university is a draft.
+	 *
+	 * @return <code>true</code> if this university is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft();
+
+	/**
+	 * Returns <code>true</code> if this university is expired.
+	 *
+	 * @return <code>true</code> if this university is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired();
+
+	/**
+	 * Returns <code>true</code> if this university is inactive.
+	 *
+	 * @return <code>true</code> if this university is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive();
+
+	/**
+	 * Returns <code>true</code> if this university is incomplete.
+	 *
+	 * @return <code>true</code> if this university is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete();
+
+	/**
+	 * Returns <code>true</code> if this university is pending.
+	 *
+	 * @return <code>true</code> if this university is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending();
+
+	/**
+	 * Returns <code>true</code> if this university is scheduled.
+	 *
+	 * @return <code>true</code> if this university is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled();
 
 }

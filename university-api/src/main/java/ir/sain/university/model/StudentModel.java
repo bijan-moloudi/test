@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.StagedAuditedModel;
+import com.liferay.portal.kernel.model.WorkflowedModel;
 
 import java.util.Date;
 
@@ -37,7 +38,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface StudentModel
-	extends BaseModel<Student>, GroupedModel, ShardedModel, StagedAuditedModel {
+	extends BaseModel<Student>, GroupedModel, ShardedModel, StagedAuditedModel,
+			WorkflowedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -204,6 +206,87 @@ public interface StudentModel
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the status of this student.
+	 *
+	 * @return the status of this student
+	 */
+	@Override
+	public int getStatus();
+
+	/**
+	 * Sets the status of this student.
+	 *
+	 * @param status the status of this student
+	 */
+	@Override
+	public void setStatus(int status);
+
+	/**
+	 * Returns the status by user ID of this student.
+	 *
+	 * @return the status by user ID of this student
+	 */
+	@Override
+	public long getStatusByUserId();
+
+	/**
+	 * Sets the status by user ID of this student.
+	 *
+	 * @param statusByUserId the status by user ID of this student
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId);
+
+	/**
+	 * Returns the status by user uuid of this student.
+	 *
+	 * @return the status by user uuid of this student
+	 */
+	@Override
+	public String getStatusByUserUuid();
+
+	/**
+	 * Sets the status by user uuid of this student.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this student
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid);
+
+	/**
+	 * Returns the status by user name of this student.
+	 *
+	 * @return the status by user name of this student
+	 */
+	@AutoEscape
+	@Override
+	public String getStatusByUserName();
+
+	/**
+	 * Sets the status by user name of this student.
+	 *
+	 * @param statusByUserName the status by user name of this student
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName);
+
+	/**
+	 * Returns the status date of this student.
+	 *
+	 * @return the status date of this student
+	 */
+	@Override
+	public Date getStatusDate();
+
+	/**
+	 * Sets the status date of this student.
+	 *
+	 * @param statusDate the status date of this student
+	 */
+	@Override
+	public void setStatusDate(Date statusDate);
+
+	/**
 	 * Returns the code of this student.
 	 *
 	 * @return the code of this student
@@ -261,5 +344,69 @@ public interface StudentModel
 	 * @param universityId the university ID of this student
 	 */
 	public void setUniversityId(long universityId);
+
+	/**
+	 * Returns <code>true</code> if this student is approved.
+	 *
+	 * @return <code>true</code> if this student is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved();
+
+	/**
+	 * Returns <code>true</code> if this student is denied.
+	 *
+	 * @return <code>true</code> if this student is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied();
+
+	/**
+	 * Returns <code>true</code> if this student is a draft.
+	 *
+	 * @return <code>true</code> if this student is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft();
+
+	/**
+	 * Returns <code>true</code> if this student is expired.
+	 *
+	 * @return <code>true</code> if this student is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired();
+
+	/**
+	 * Returns <code>true</code> if this student is inactive.
+	 *
+	 * @return <code>true</code> if this student is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive();
+
+	/**
+	 * Returns <code>true</code> if this student is incomplete.
+	 *
+	 * @return <code>true</code> if this student is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete();
+
+	/**
+	 * Returns <code>true</code> if this student is pending.
+	 *
+	 * @return <code>true</code> if this student is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending();
+
+	/**
+	 * Returns <code>true</code> if this student is scheduled.
+	 *
+	 * @return <code>true</code> if this student is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled();
 
 }

@@ -6,47 +6,41 @@ import com.liferay.portal.search.batch.BatchIndexingActionable;
 import com.liferay.portal.search.batch.DynamicQueryBatchIndexingActionableFactory;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.index.contributor.helper.ModelIndexerWriterDocumentHelper;
-import ir.sain.university.model.University;
-import ir.sain.university.service.UniversityLocalService;
+import ir.sain.university.model.Student;
+import ir.sain.university.service.StudentLocalService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-
 @Component(
         immediate = true,
-        property = "indexer.class.name=ir.sain.university.model.University",
+        property = "indexer.class.name=ir.sain.university.model.Student",
         service = ModelIndexerWriterContributor.class
 )
-public class UniversityModelIndexerWriterContributor implements ModelIndexerWriterContributor<University> {
+public class UniversityStudentModelIndexerWriterContributor implements ModelIndexerWriterContributor<Student> {
 
     @Override
     public void customize(
             BatchIndexingActionable batchIndexingActionable,
             ModelIndexerWriterDocumentHelper modelIndexerWriterDocumentHelper) {
 
-        batchIndexingActionable.setPerformActionMethod((University university) -> {
+        batchIndexingActionable.setPerformActionMethod((Student student) -> {
             Document document = modelIndexerWriterDocumentHelper.getDocument(
-                    university);
+                    student);
 
             batchIndexingActionable.addDocuments(document);
+
         });
     }
 
     @Override
     public BatchIndexingActionable getBatchIndexingActionable() {
         return dynamicQueryBatchIndexingActionableFactory.getBatchIndexingActionable(
-                universityLocalService.getIndexableActionableDynamicQuery());
+                studentLocalService.getIndexableActionableDynamicQuery());
     }
 
     @Override
-    public long getCompanyId(University university) {
-        return university.getCompanyId();
-    }
-
-    @Override
-    public void modelIndexed(University university) {
-        universityStudentBatchReindexer.reindex(
-                university.getUniversityId(), university.getCompanyId());
+    public long getCompanyId(Student student) {
+        return student.getCompanyId();
     }
 
     @Reference
@@ -54,9 +48,6 @@ public class UniversityModelIndexerWriterContributor implements ModelIndexerWrit
             dynamicQueryBatchIndexingActionableFactory;
 
     @Reference
-    protected UniversityStudentBatchReindexer universityStudentBatchReindexer;
+    protected StudentLocalService studentLocalService;
 
-    @Reference
-    protected UniversityLocalService universityLocalService;
 }
-

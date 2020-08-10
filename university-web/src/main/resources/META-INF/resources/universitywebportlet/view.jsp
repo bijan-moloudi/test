@@ -6,45 +6,32 @@
     long universityId = Long.valueOf((Long) renderRequest.getAttribute("universityId"));
 %>
 
-<aui:nav cssClass="nav-tabs">
+<%-- for search --%>
+<portlet:renderURL var="searchURL">
+    <portlet:param name="mvcPath"
+                   value="/universitywebportlet/view_search.jsp" />
+</portlet:renderURL>
 
-    <%
-        List<University> universities = UniversityLocalServiceUtil.getUniversities(scopeGroupId);
+<aui:form action="${searchURL}" name="fm">
 
-        for (int i = 0; i < universities.size(); i++) {
+    <div class="row">
+        <div class="col-md-8">
+            <aui:input inlineLabel="left" label="" name="keywords" placeholder="search-entries" size="256" />
+        </div>
 
-            University curUniversity = universities.get(i);
-            String cssClass = StringPool.BLANK;
+        <div class="col-md-4">
+            <aui:button type="submit" value="search" />
+        </div>
+    </div>
 
-            if (curUniversity.getUniversityId() == universityId) {
-                cssClass = "active";
-            }
+</aui:form>
 
-            if (UniversityModelPermission.contains(
-                    permissionChecker, curUniversity.getUniversityId(), "VIEW")) {
-
-    %>
-
-    <portlet:renderURL var="viewPageURL">
-        <portlet:param name="mvcPath" value="/universitywebportlet/view.jsp"/>
-        <portlet:param name="universityId"
-                       value="<%=String.valueOf(curUniversity.getUniversityId())%>"/>
-    </portlet:renderURL>
+<%-- end search portion--%>
 
 
-    <aui:nav-item cssClass="<%=cssClass%>" href="<%=viewPageURL%>"
-                  label="<%=HtmlUtil.escape(curUniversity.getName())%>"/>
-
-    <%
-            }
-
-        }
-    %>
-
-</aui:nav>
 
 <aui:button-row cssClass="university-buttons">
-    <c:if test='<%= UniversityPermission.contains(permissionChecker, scopeGroupId, "ADD_ENTRY") %>'>
+    <c:if test='<%= UniversityPermission.contains(permissionChecker, scopeGroupId, "ADD_STUDENT") %>'>
         <portlet:renderURL var="addStudentURL">
             <portlet:param name="mvcPath" value="/universitywebportlet/edit_student.jsp"/>
             <portlet:param name="universityId"

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.StagedAuditedModel;
+import com.liferay.portal.kernel.model.WorkflowedModel;
 
 import java.util.Date;
 
@@ -37,7 +38,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface CourseModel
-	extends BaseModel<Course>, GroupedModel, ShardedModel, StagedAuditedModel {
+	extends BaseModel<Course>, GroupedModel, ShardedModel, StagedAuditedModel,
+			WorkflowedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -204,6 +206,87 @@ public interface CourseModel
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the status of this course.
+	 *
+	 * @return the status of this course
+	 */
+	@Override
+	public int getStatus();
+
+	/**
+	 * Sets the status of this course.
+	 *
+	 * @param status the status of this course
+	 */
+	@Override
+	public void setStatus(int status);
+
+	/**
+	 * Returns the status by user ID of this course.
+	 *
+	 * @return the status by user ID of this course
+	 */
+	@Override
+	public long getStatusByUserId();
+
+	/**
+	 * Sets the status by user ID of this course.
+	 *
+	 * @param statusByUserId the status by user ID of this course
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId);
+
+	/**
+	 * Returns the status by user uuid of this course.
+	 *
+	 * @return the status by user uuid of this course
+	 */
+	@Override
+	public String getStatusByUserUuid();
+
+	/**
+	 * Sets the status by user uuid of this course.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this course
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid);
+
+	/**
+	 * Returns the status by user name of this course.
+	 *
+	 * @return the status by user name of this course
+	 */
+	@AutoEscape
+	@Override
+	public String getStatusByUserName();
+
+	/**
+	 * Sets the status by user name of this course.
+	 *
+	 * @param statusByUserName the status by user name of this course
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName);
+
+	/**
+	 * Returns the status date of this course.
+	 *
+	 * @return the status date of this course
+	 */
+	@Override
+	public Date getStatusDate();
+
+	/**
+	 * Sets the status date of this course.
+	 *
+	 * @param statusDate the status date of this course
+	 */
+	@Override
+	public void setStatusDate(Date statusDate);
+
+	/**
 	 * Returns the code of this course.
 	 *
 	 * @return the code of this course
@@ -260,5 +343,69 @@ public interface CourseModel
 	 * @param universityId the university ID of this course
 	 */
 	public void setUniversityId(long universityId);
+
+	/**
+	 * Returns <code>true</code> if this course is approved.
+	 *
+	 * @return <code>true</code> if this course is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved();
+
+	/**
+	 * Returns <code>true</code> if this course is denied.
+	 *
+	 * @return <code>true</code> if this course is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied();
+
+	/**
+	 * Returns <code>true</code> if this course is a draft.
+	 *
+	 * @return <code>true</code> if this course is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft();
+
+	/**
+	 * Returns <code>true</code> if this course is expired.
+	 *
+	 * @return <code>true</code> if this course is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired();
+
+	/**
+	 * Returns <code>true</code> if this course is inactive.
+	 *
+	 * @return <code>true</code> if this course is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive();
+
+	/**
+	 * Returns <code>true</code> if this course is incomplete.
+	 *
+	 * @return <code>true</code> if this course is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete();
+
+	/**
+	 * Returns <code>true</code> if this course is pending.
+	 *
+	 * @return <code>true</code> if this course is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending();
+
+	/**
+	 * Returns <code>true</code> if this course is scheduled.
+	 *
+	 * @return <code>true</code> if this course is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled();
 
 }

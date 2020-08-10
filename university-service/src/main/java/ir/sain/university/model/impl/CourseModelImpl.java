@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import ir.sain.university.model.Course;
 import ir.sain.university.model.CourseModel;
@@ -79,6 +80,8 @@ public class CourseModelImpl
 		{"groupId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
+		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
+		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
 		{"code_", Types.VARCHAR}, {"name", Types.VARCHAR},
 		{"unit", Types.INTEGER}, {"universityId", Types.BIGINT}
 	};
@@ -95,6 +98,10 @@ public class CourseModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("code_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("unit", Types.INTEGER);
@@ -102,7 +109,7 @@ public class CourseModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table UNV_Course (uuid_ VARCHAR(75) null,courseId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,code_ VARCHAR(75) null,name VARCHAR(75) null,unit INTEGER,universityId LONG)";
+		"create table UNV_Course (uuid_ VARCHAR(75) null,courseId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,code_ VARCHAR(75) null,name VARCHAR(75) null,unit INTEGER,universityId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table UNV_Course";
 
@@ -155,6 +162,10 @@ public class CourseModelImpl
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
+		model.setStatus(soapModel.getStatus());
+		model.setStatusByUserId(soapModel.getStatusByUserId());
+		model.setStatusByUserName(soapModel.getStatusByUserName());
+		model.setStatusDate(soapModel.getStatusDate());
 		model.setCode(soapModel.getCode());
 		model.setName(soapModel.getName());
 		model.setUnit(soapModel.getUnit());
@@ -340,6 +351,22 @@ public class CourseModelImpl
 		attributeGetterFunctions.put("modifiedDate", Course::getModifiedDate);
 		attributeSetterBiConsumers.put(
 			"modifiedDate", (BiConsumer<Course, Date>)Course::setModifiedDate);
+		attributeGetterFunctions.put("status", Course::getStatus);
+		attributeSetterBiConsumers.put(
+			"status", (BiConsumer<Course, Integer>)Course::setStatus);
+		attributeGetterFunctions.put(
+			"statusByUserId", Course::getStatusByUserId);
+		attributeSetterBiConsumers.put(
+			"statusByUserId",
+			(BiConsumer<Course, Long>)Course::setStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", Course::getStatusByUserName);
+		attributeSetterBiConsumers.put(
+			"statusByUserName",
+			(BiConsumer<Course, String>)Course::setStatusByUserName);
+		attributeGetterFunctions.put("statusDate", Course::getStatusDate);
+		attributeSetterBiConsumers.put(
+			"statusDate", (BiConsumer<Course, Date>)Course::setStatusDate);
 		attributeGetterFunctions.put("code", Course::getCode);
 		attributeSetterBiConsumers.put(
 			"code", (BiConsumer<Course, String>)Course::setCode);
@@ -515,6 +542,71 @@ public class CourseModelImpl
 
 	@JSON
 	@Override
+	public int getStatus() {
+		return _status;
+	}
+
+	@Override
+	public void setStatus(int status) {
+		_status = status;
+	}
+
+	@JSON
+	@Override
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	@Override
+	public String getStatusByUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getStatusByUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid) {
+	}
+
+	@JSON
+	@Override
+	public String getStatusByUserName() {
+		if (_statusByUserName == null) {
+			return "";
+		}
+		else {
+			return _statusByUserName;
+		}
+	}
+
+	@Override
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	@JSON
+	@Override
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	@Override
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
+	@JSON
+	@Override
 	public String getCode() {
 		if (_code == null) {
 			return "";
@@ -587,6 +679,86 @@ public class CourseModelImpl
 			PortalUtil.getClassNameId(Course.class.getName()));
 	}
 
+	@Override
+	public boolean isApproved() {
+		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDenied() {
+		if (getStatus() == WorkflowConstants.STATUS_DENIED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDraft() {
+		if (getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isExpired() {
+		if (getStatus() == WorkflowConstants.STATUS_EXPIRED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isInactive() {
+		if (getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isIncomplete() {
+		if (getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isPending() {
+		if (getStatus() == WorkflowConstants.STATUS_PENDING) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isScheduled() {
+		if (getStatus() == WorkflowConstants.STATUS_SCHEDULED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -631,6 +803,10 @@ public class CourseModelImpl
 		courseImpl.setUserName(getUserName());
 		courseImpl.setCreateDate(getCreateDate());
 		courseImpl.setModifiedDate(getModifiedDate());
+		courseImpl.setStatus(getStatus());
+		courseImpl.setStatusByUserId(getStatusByUserId());
+		courseImpl.setStatusByUserName(getStatusByUserName());
+		courseImpl.setStatusDate(getStatusDate());
 		courseImpl.setCode(getCode());
 		courseImpl.setName(getName());
 		courseImpl.setUnit(getUnit());
@@ -760,6 +936,27 @@ public class CourseModelImpl
 			courseCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
+		courseCacheModel.status = getStatus();
+
+		courseCacheModel.statusByUserId = getStatusByUserId();
+
+		courseCacheModel.statusByUserName = getStatusByUserName();
+
+		String statusByUserName = courseCacheModel.statusByUserName;
+
+		if ((statusByUserName != null) && (statusByUserName.length() == 0)) {
+			courseCacheModel.statusByUserName = null;
+		}
+
+		Date statusDate = getStatusDate();
+
+		if (statusDate != null) {
+			courseCacheModel.statusDate = statusDate.getTime();
+		}
+		else {
+			courseCacheModel.statusDate = Long.MIN_VALUE;
+		}
+
 		courseCacheModel.code = getCode();
 
 		String code = courseCacheModel.code;
@@ -868,6 +1065,10 @@ public class CourseModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private int _status;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
 	private String _code;
 	private String _name;
 	private int _unit;

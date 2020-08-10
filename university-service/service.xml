@@ -23,6 +23,11 @@
         <column name="createDate" type="Date"/>
         <column name="modifiedDate" type="Date"/>
 
+        <column name="status" type="int" />
+        <column name="statusByUserId" type="long" />
+        <column name="statusByUserName" type="String" />
+        <column name="statusDate" type="Date" />
+
         <!-- Other fields -->
         <column name="name" type="String"/>
         <!-- Order -->
@@ -54,6 +59,11 @@
         <column name="userName" type="String"/>
         <column name="createDate" type="Date"/>
         <column name="modifiedDate" type="Date"/>
+
+        <column name="status" type="int" />
+        <column name="statusByUserId" type="long" />
+        <column name="statusByUserName" type="String" />
+        <column name="statusDate" type="Date" />
 
         <!-- Other fields -->
         <column name="code" type="String"/>
@@ -92,6 +102,11 @@
         <column name="userName" type="String"/>
         <column name="createDate" type="Date"/>
         <column name="modifiedDate" type="Date"/>
+
+        <column name="status" type="int" />
+        <column name="statusByUserId" type="long" />
+        <column name="statusByUserName" type="String" />
+        <column name="statusDate" type="Date" />
 
         <!-- Other fields -->
         <column name="code" type="String"/>

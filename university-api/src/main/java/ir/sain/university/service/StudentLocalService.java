@@ -72,6 +72,7 @@ public interface StudentLocalService
 
 	public void addCourseStudents(long courseId, long[] studentIds);
 
+	@Indexable(type = IndexableType.REINDEX)
 	public Student addStudent(
 			long userId, long universityId, String name, String phone,
 			ServiceContext serviceContext)
@@ -122,6 +123,7 @@ public interface StudentLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public Student deleteStudent(long studentId) throws PortalException;
 
+	@Indexable(type = IndexableType.DELETE)
 	public Student deleteStudent(long studentId, ServiceContext serviceContext)
 		throws PortalException;
 
@@ -355,6 +357,7 @@ public interface StudentLocalService
 
 	public void setCourseStudents(long courseId, long[] studentIds);
 
+	@Indexable(type = IndexableType.REINDEX)
 	public Student updateStudent(
 			long userId, long universityId, long studentId, String name,
 			String phone, ServiceContext serviceContext)

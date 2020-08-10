@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
@@ -38,6 +40,7 @@ import java.util.List;
 )
 public class StudentLocalServiceImpl extends StudentLocalServiceBaseImpl {
 
+    @Indexable(type = IndexableType.REINDEX)
     public Student addStudent(
             long userId, long universityId, String name, String phone,
             ServiceContext serviceContext)
@@ -78,6 +81,7 @@ public class StudentLocalServiceImpl extends StudentLocalServiceBaseImpl {
 
     }
 
+    @Indexable(type = IndexableType.REINDEX)
     public Student updateStudent(
             long userId, long universityId, long studentId, String name, String phone,
             ServiceContext serviceContext)
@@ -108,6 +112,8 @@ public class StudentLocalServiceImpl extends StudentLocalServiceBaseImpl {
         return student;
     }
 
+
+    @Indexable(type = IndexableType.DELETE)
     public Student deleteStudent(long studentId, ServiceContext serviceContext)
             throws PortalException {
 
@@ -117,7 +123,7 @@ public class StudentLocalServiceImpl extends StudentLocalServiceBaseImpl {
 
         resourceLocalService.deleteResource(
                 serviceContext.getCompanyId(), Student.class.getName(),
-                ResourceConstants.SCOPE_INDIVIDUAL, studentId);
+                ResourceConstants.SCOPE_INDIVIDUAL, student.getStudentId());
 
         return student;
     }

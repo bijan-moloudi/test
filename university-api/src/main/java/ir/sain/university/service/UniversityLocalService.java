@@ -64,6 +64,7 @@ public interface UniversityLocalService
 	 *
 	 * Never modify or reference this interface directly. Always use {@link UniversityLocalServiceUtil} to access the university local service. Add custom service methods to <code>ir.sain.university.service.impl.UniversityLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	public University addUniversity(
 			long userId, String name, ServiceContext serviceContext)
 		throws PortalException;
@@ -104,6 +105,7 @@ public interface UniversityLocalService
 	public University deleteUniversity(long universityId)
 		throws PortalException;
 
+	@Indexable(type = IndexableType.DELETE)
 	public University deleteUniversity(
 			long univetsityId, ServiceContext serviceContext)
 		throws PortalException, SystemException;
@@ -305,6 +307,7 @@ public interface UniversityLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getUniversityCount(long groupId);
 
+	@Indexable(type = IndexableType.REINDEX)
 	public University updateUniversity(
 			long userId, long univetsityId, String name,
 			ServiceContext serviceContext)

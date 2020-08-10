@@ -12,6 +12,10 @@ dependencies {
 	compileOnly group: "com.liferay", name: "com.liferay.portal.search.spi", version: "2.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.portal.search.api", version: "2.0.0"
 
+	compileOnly group: "com.liferay", name: "com.liferay.petra.function"
+	compileOnly group: "com.liferay", name: "com.liferay.petra.model.adapter"
+	compileOnly group: "com.liferay", name: "com.liferay.petra.reflect"
+
 	compileOnly project(":modules:university:university-api")
 
 
